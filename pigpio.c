@@ -7765,7 +7765,8 @@ static void initPWM(unsigned bits)
 
    myGpioDelay(10);
 
-   dmaIVirt[0]->periphData = 1;
+   if (!(gpioCfg.ifFlags & PI_DISABLE_ALERT))
+      dmaIVirt[0]->periphData = 1;
 
    /* enable PWM DMA, raise panic and dreq thresholds to 15 */
 
@@ -7835,7 +7836,8 @@ static void initPCM(unsigned bits)
 
    pcmReg[PCM_CS] |= PCM_CS_TXON;
 
-   dmaIVirt[0]->periphData = 0x0F;
+   if (!(gpioCfg.ifFlags & PI_DISABLE_ALERT))
+      dmaIVirt[0]->periphData = 0x0F;
 }
 
 /* ----------------------------------------------------------------------- */
@@ -8324,7 +8326,10 @@ int initInitialise(void)
 
    if (initPeripherals() < 0) return PI_INIT_FAILED;
 
-   if (initAllocDMAMem() < 0) return PI_INIT_FAILED;
+   if (!(gpioCfg.ifFlags & PI_DISABLE_ALERT))
+   {
+      if (initAllocDMAMem() < 0) return PI_INIT_FAILED;
+   }
 
    /* done with /dev/mem */
 
@@ -8430,14 +8435,18 @@ int initInitialise(void)
 
    myGpioDelay(1000);
 
-   dmaInitCbs();
+   if (!(gpioCfg.ifFlags & PI_DISABLE_ALERT))
+      dmaInitCbs();
 
    flushMemory();
 
-   //cast twice to suppress compiler warning, I belive this cast
-   //is ok because dmaIBus contains bus addresses, not virtual
-   //addresses.
-   initDMAgo((uint32_t *)dmaIn, (uint32_t)(uintptr_t)dmaIBus[0]);
+   if (!(gpioCfg.ifFlags & PI_DISABLE_ALERT))
+   {
+      //cast twice to suppress compiler warning, I belive this cast
+      //is ok because dmaIBus contains bus addresses, not virtual
+      //addresses.
+      initDMAgo((uint32_t *)dmaIn, (uint32_t)(uintptr_t)dmaIBus[0]);
+   }
 
    return PIGPIO_VERSION;
 }
