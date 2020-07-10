@@ -845,7 +845,7 @@ Assumes two counters per block.  Each counter 4 * 16 (16^4=65536)
 #define MB_DEV1 "/dev/vcio"
 #define MB_DEV2 "/dev/pigpio-mb"
 
-#define BUS_TO_PHYS(x) ((x)&~0xC0000000)
+#define BUS_TO_PHYS(x) ((x) & 0x3FFFFFFFUL)
 
 #define MB_END_TAG 0
 #define MB_PROCESS_REQUEST 0
