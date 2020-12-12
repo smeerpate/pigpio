@@ -8607,6 +8607,16 @@ void time_sleep(double seconds)
 
 /* ----------------------------------------------------------------------- */
 
+uint32_t getRawBCSCReg(unsigned int offset)
+{
+    if (bscsReg != MAP_FAILED)
+        return bscsReg[offset];
+    else
+        return 0;
+}
+
+/* ----------------------------------------------------------------------- */
+
 void rawDumpWave(void)
 {
    int i;
