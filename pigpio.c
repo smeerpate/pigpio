@@ -7447,7 +7447,7 @@ static int initPeripherals(void)
    if (padsReg == MAP_FAILED)
       SOFT_ERROR(PI_INIT_FAILED, "mmap pads failed (%m)");
 
-   bscsReg  = initMapMem(fdMem, BSCS_BASE,  BSCS_LEN);
+   bscsReg  = (volatile uint32_t *)initMapMem(fdMem, BSCS_BASE,  BSCS_LEN);
 
    if (bscsReg == MAP_FAILED)
       SOFT_ERROR(PI_INIT_FAILED, "mmap bscs failed (%m)");
