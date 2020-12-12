@@ -3101,6 +3101,30 @@ if (status >= 0)
 D*/
 
 /*F*/
+uint32_t getRawBCSCReg(unsigned int offset);
+/*D
+This function allows one to read-back BCSC SFRs.
+The return value of this function is the uint32_t
+representation of the SFR.
+    Offset 0: DR
+    Offset 1: RSR
+    Offset 2: SLV
+    Offset 3: CR
+    Offset 4: FR
+    Offset 5: IFLS
+    Offset 6: IMSC
+    Offset 7: RIS
+    Offset 8: MIS
+    Offset 9: ICR
+    Offset 10: DMACR
+    Offset 11: TDR
+    Offset 12: GPUSTAT
+    Offset 13: HCTRL
+    Offset 14: DEBUG1
+    Offset 15: DEBUG2
+D*/
+
+/*F*/
 int bbSPIOpen(
    unsigned CS, unsigned MISO, unsigned MOSI, unsigned SCLK,
    unsigned baud, unsigned spiFlags);
