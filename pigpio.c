@@ -11006,6 +11006,8 @@ int bscXfer(volatile bsc_xfer_t *xfer)
 
    int copied=0;
    int active, mode;
+   
+   unsigned int uiTimeOutCnt = 1000000;
 
    DBG(DBG_USER, "control=0x%X (sa=0x%X, cr=0x%X) tx=%d [%s]",
       xfer->control,
@@ -11072,6 +11074,18 @@ int bscXfer(volatile bsc_xfer_t *xfer)
       }
 
       if (active) myGpioSleep(0, 5);
+      
+      /* decrement timeout counter */
+      if (uiTimeOutCnt > 0)
+      {
+          uiTimeOutCnt -= 1;
+      }
+      else
+      {
+          /* timed out */
+          eventAlert[PI_EVENT_BSC].ignore = 0;
+          return -1;
+      }
    }
 
    bscFR = bscsReg[BSC_FR] & 0xffff;
