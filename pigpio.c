@@ -1867,7 +1867,7 @@ static int myDoCommand(uintptr_t *p, unsigned bufSize, char *buf)
    uint32_t mask;
    uint32_t tmp1, tmp2, tmp3, tmp4, tmp5;
    gpioPulse_t *pulse;
-   bsc_xfer_t xfer;
+   volatile bsc_xfer_t xfer;
    int masked;
    res = 0;
 
@@ -1924,13 +1924,13 @@ static int myDoCommand(uintptr_t *p, unsigned bufSize, char *buf)
          xfer.control = p[1];
          if (p[3] > BSC_FIFO_SIZE) p[3] = BSC_FIFO_SIZE;
          xfer.txCnt = p[3];
-         if (p[3]) memcpy(&xfer.txBuf, buf, p[3]);
+         if (p[3]) memcpy((void *)&xfer.txBuf, buf, p[3]);
          res = bscXfer(&xfer);
          if (res >= 0)
          {
             memcpy(buf, &res, 4);
             res = 4 + xfer.rxCnt;
-            if (res > 4) memcpy(buf+4, &xfer.rxBuf, res-4);
+            if (res > 4) memcpy(buf+4, (void *)&xfer.rxBuf, res-4);
          }
          break;
 
@@ -11000,7 +11000,7 @@ void bscTerm(int mode)
    }
 }
 
-int bscXfer(bsc_xfer_t *xfer)
+int bscXfer(volatile bsc_xfer_t *xfer)
 {
    static int bscMode = 0;
 

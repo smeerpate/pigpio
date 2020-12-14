@@ -2962,7 +2962,7 @@ End
 D*/
 
 /*F*/
-int bscXfer(bsc_xfer_t *bsc_xfer);
+int bscXfer(volatile bsc_xfer_t *bsc_xfer);
 /*D
 This function provides a low-level interface to the SPI/I2C Slave
 peripheral on the BCM chip.
