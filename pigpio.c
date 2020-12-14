@@ -11044,7 +11044,7 @@ int bscXfer(volatile bsc_xfer_t *xfer)
 
    bscsReg[BSC_SLV] = ((xfer->control)>>16) & 127;
    bscsReg[BSC_CR] = (xfer->control) & 0x3fff;
-   bscsReg[BSC_RSR]=0; /* clear underrun and overrun errors */
+   bscsReg[BSC_RSR] = 0; /* clear underrun and overrun errors */
 
    active = 1;
 
@@ -11071,7 +11071,7 @@ int bscXfer(volatile bsc_xfer_t *xfer)
          active = bscsReg[BSC_FR] & (BSC_FR_RXBUSY | BSC_FR_TXBUSY);
       }
 
-      if (active) myGpioSleep(0, 20);
+      if (active) myGpioSleep(0, 5);
    }
 
    bscFR = bscsReg[BSC_FR] & 0xffff;
